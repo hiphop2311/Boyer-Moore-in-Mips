@@ -1,8 +1,8 @@
 .data
-enterInput1: .asciiz "Text Input : " 
-resultInput2: .asciiz "Text Pattern : "
+text: .asciiz "Text Input : " 
+pattern: .asciiz "Text Pattern : "
 count: .asciiz "Match count : "
-Test: .asciiz "Text Input is : "
+
 buffer1: .space 100
 buffer2: .space 100
 .text
@@ -13,7 +13,7 @@ buffer2: .space 100
  
 main:
 	li $v0, 4
-	la $a0, enterInput1
+	la $a0, text
 	syscall
 
 	li $v0,8
@@ -23,7 +23,7 @@ main:
 	syscall
 
 	li $v0, 4
-	la $a0, resultInput2
+	la $a0, pattern
 	syscall
 
 	li $v0,8
@@ -64,10 +64,6 @@ endStrlen2:
 	move $a0,$s3
 	syscall
 
-#li $v0,4
-#la $a0,buffer2
-#move $a0,$t1
-#syscall
 
 
 
