@@ -77,21 +77,17 @@ outPrep:
 	li $t1,0 	     		#initialize i=0
  	move $t2,$s1      	    #t2 =  textPattern
  	#move $t7,$s4	 		#t7 =	table
- 	addi $t5,$s3,-1	 
+ 	addi $t5,$s3,-1			#t5 = lenpatt -1 	 
 setTable: 
-						   	#t5 = lenpatt -1 
+						   	
 	bge $t1,$t5,outSetTable  #condition  i< lenpat -1
 
 	lb $t4, 0($t2)		# load pat[i] to t4
 	add $t7,$s4,$t4		#address table
-<<<<<<< HEAD
-	sb $t5, 0($t7)
-=======
 
 	sub $t6,$t5,$t1      # t6 = lenpatt - i -1
 	
 	sb $t6, 0($t7)
->>>>>>> 6e49dc12dc3087c72c2169b53ea361345965dccc
 
 	addi $t1,$t1,1     #i=i+1
 	addi $t2,$t2,1     #textPattern[i]
@@ -100,7 +96,6 @@ setTable:
 
 outSetTable:
 	li 		$t2,0				#shift = 0
-	
 while1:
 		sub 	$t3,$s2,$t2			#$t3 = txtlen - shift
 		blt		$t3,$s3,endwhile1		#$t3<$s3? go endAlgo (out while)
@@ -146,4 +141,4 @@ endwhile1:
 
 
 li $v0,10
-syscall
+syscall	
