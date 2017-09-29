@@ -16,74 +16,78 @@ Table: .space 256
  
 main:
 	li $v0, 4
-	la $a0, enterInput1
+	la $a0, enterInput1    #print "Text Input : " 
 	syscall
 
-	li $v0,8
+	li $v0,8			   #Receive string Input
 	la $a0,buffer1
 	li $a1,100
-	move $s0,$a0
+	move $s0,$a0			# $s0 = string Text
 	syscall
 
-	li $v0, 4
-	la $a0, resultInput2
+	li $v0, 4				#print "Text Pattern : "
+	la $a0, resultInput2 
 	syscall
 
 	li $v0,8
-	la $a0,buffer2
+	la $a0,buffer2	    	#Receive string Pattern
 	li $a1,100
-	move $s1,$a0
+	move $s1,$a0			# $s1 = string Pattern
 	syscall
 
-	li $s5,0		#count(result) = 0
+	li $s5,0				#count(result) = 0
   
   	
-  	move $t0,$s0
-    li $t2,0  		#initializ count = 0
+  	move $t0,$s0            #t0 = start & of text Input
+
+    li $t2,0  		        #initializ count = 0
 strlen1:
- 	lb $t1, 0($t0)
- 	beqz $t1,endStrlen1
- 	addi $t0,$t0,1
- 	addi $t2, $t2, 1
+ 	lb $t1, 0($t0)          #load charactor to t1
+ 	beqz $t1,endStrlen1     #check whether 0 or not 0 branched
+ 	addi $t0,$t0,1  	    # &[++]
+ 	addi $t2, $t2, 1        # count String ++
  	j strlen1
 endStrlen1:
-	addi $t2,$t2,-1    
-	move $s2,$t2
+	addi $t2,$t2,-1         #clear count of \n
+	move $s2,$t2		    #s2 store len of Text Input	
 
-	move $t0,$s1
+	move $t0,$s1   		    #t1 =start & of text Pattern
 	li   $t2,0
 strlen2:
-	lb $t1, 0($t0)
- 	beqz $t1,endStrlen2
- 	addi $t0,$t0,1
- 	addi $t2, $t2, 1
+	lb $t1, 0($t0)			#load charactor to t1
+ 	beqz $t1,endStrlen2		#check whether 0 or not 0 branched
+ 	addi $t0,$t0,1			# &[++]
+ 	addi $t2, $t2, 1		# count String ++
  	j strlen2
 endStrlen2:
-	addi $t2,$t2,-1    
-	move $s3,$t2
+	addi $t2,$t2,-1   	    #clear count of \n
+	move $s3,$t2			#s3 store len of Text Pttern
 
-	la $s4,Table  
-	move $t0,$s4
-	li $t1,0 	 	#initialize i=0
+	la $s4,Table  			
+	move $t0,$s4			#t0 = start&s4 (table)
+	li $t1,0 	 			#initialize i=0
 	li $t2,256
 forPreprocess:
-	sb $s3, 0($t0)
-	bge $t1,$t2,outPrep
-	addi $t1,$t1,1
-	addi $t0,$t0,1
+	sb $s3, 0($t0)			#store lenpatt to all array of Table
+	bge $t1,$t2,outPrep		#if(i>=256) branched
+	addi $t1,$t1,1			#i++
+	addi $t0,$t0,1			# &Table++
 	j forPreprocess
 outPrep:
-	li $t1,0 	     	#initialize i=0
- 	move $t2,$s1        #t2 =  textPattern
- 	#move $t7,$s4		#t7 =	table
+	li $t1,0 	     		#initialize i=0
+ 	move $t2,$s1      	    #t2 =  textPattern
+ 	#move $t7,$s4	 		#t7 =	table
+ 	addi $t5,$s3,-1	 
 setTable: 
-	addi $t5,$s3,-1	 		#t5 = lenpatt -1 
+						   	#t5 = lenpatt -1 
 	bge $t1,$t5,outSetTable  #condition  i< lenpat -1
 
-	lb $t4, 0($t2)		# load char[i] to t4
-	sub $t5,$t5,$t1      # t5 = lenpatt - i 
+	lb $t4, 0($t2)		# load pat[i] to t4
 	add $t7,$s4,$t4		#address table
-	sb $t4, 0($t7)
+
+	sub $t6,$t5,$t1      # t6 = lenpatt - i -1
+	
+	sb $t6, 0($t7)
 
 	addi $t1,$t1,1     #i=i+1
 	addi $t2,$t2,1     #textPattern[i]
