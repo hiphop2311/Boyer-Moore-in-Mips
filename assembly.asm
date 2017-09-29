@@ -83,7 +83,7 @@ setTable:
 	lb $t4, 0($t2)		# load char[i] to t4
 	sub $t5,$t5,$t1      # t5 = lenpatt - i 
 	add $t7,$s4,$t4		#address table
-	sb $t4, 0($t7)
+	sb $t5, 0($t7)
 
 	addi $t1,$t1,1     #i=i+1
 	addi $t2,$t2,1     #textPattern[i]
@@ -92,6 +92,7 @@ setTable:
 
 outSetTable:
 	li 		$t2,0				#shift = 0
+	
 while1:
 		sub 	$t3,$s2,$t2			#$t3 = txtlen - shift
 		blt		$t3,$s3,endwhile1		#$t3<$s3? go endAlgo (out while)
